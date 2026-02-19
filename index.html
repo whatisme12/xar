@@ -1,1 +1,56 @@
 index.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>XÆRTH Translator</title>
+</head>
+<body style="background:black;color:lime;text-align:center;font-family:monospace;">
+
+<h1>XÆRTH SYSTEM</h1>
+
+<textarea id="input" style="width:80%;height:100px;"></textarea>
+<br><br>
+
+<button onclick="traducirAXærth()">Español → XÆRTH</button>
+<button onclick="traducirAEspanol()">XÆRTH → Español</button>
+
+<p id="output"></p>
+
+<script>
+const map = {
+"A":"|ʌ","B":"|•","C":"|⌒","D":"|ˣ",
+"E":"─ʌ","F":"─•","G":"─⌒","H":"─ˣ",
+"I":"∥ʌ","J":"∥•","K":"∥⌒","L":"∥ˣ",
+"M":"/ʌ","N":"/•","Ñ":"/⌒","O":"/ˣ",
+"P":"\\ʌ","Q":"\\•","R":"\\⌒","S":"\\ˣ",
+"T":"+ʌ","U":"+•","V":"+⌒","W":"+ˣ",
+"X":"◇ʌ","Y":"◇•","Z":"◇⌒"
+};
+
+const reverseMap = {};
+for (let key in map) {
+  reverseMap[map[key]] = key;
+}
+
+function traducirAXærth(){
+let text = document.getElementById("input").value.toUpperCase();
+let result = "";
+for(let i=0;i<text.length;i++){
+result += map[text[i]] ? map[text[i]]+" " : text[i];
+}
+document.getElementById("output").innerText = result;
+}
+
+function traducirAEspanol(){
+let text = document.getElementById("input").value.trim().split(" ");
+let result = "";
+for(let i=0;i<text.length;i++){
+result += reverseMap[text[i]] ? reverseMap[text[i]] : text[i];
+}
+document.getElementById("output").innerText = result;
+}
+</script>
+
+</body>
+  </html>
