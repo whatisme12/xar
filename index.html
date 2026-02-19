@@ -3,7 +3,7 @@ index.html
 <html>
 <head>
 <meta charset="UTF-8">
-<title>XÆRTH Translator</title>
+<title>XÆRTH Translator Mejorado</title>
 </head>
 <body style="background:black;color:lime;text-align:center;font-family:monospace;">
 
@@ -28,29 +28,40 @@ const map = {
 "X":"◇ʌ","Y":"◇•","Z":"◇⌒"
 };
 
+// mapa inverso
 const reverseMap = {};
 for (let key in map) {
   reverseMap[map[key]] = key;
 }
 
+// Español -> XÆRTH
 function traducirAXærth(){
-let text = document.getElementById("input").value.toUpperCase();
-let result = "";
-for(let i=0;i<text.length;i++){
-result += map[text[i]] ? map[text[i]]+" " : text[i];
-}
-document.getElementById("output").innerText = result;
+  let text = document.getElementById("input").value.toUpperCase();
+  let result = "";
+  for(let i=0;i<text.length;i++){
+    result += map[text[i]] ? map[text[i]]+" " : text[i];
+  }
+  document.getElementById("output").innerText = result.trim();
 }
 
+// XÆRTH -> Español
 function traducirAEspanol(){
-let text = document.getElementById("input").value.trim().split(" ");
-let result = "";
-for(let i=0;i<text.length;i++){
-result += reverseMap[text[i]] ? reverseMap[text[i]] : text[i];
-}
-document.getElementById("output").innerText = result;
+  let text = document.getElementById("input").value;
+  let result = "";
+  let buffer = "";
+  for(let i=0;i<text.length;i++){
+    buffer += text[i];
+    if(reverseMap[buffer]){
+      result += reverseMap[buffer];
+      buffer = "";
+    } else if (text[i] === " ") {
+      buffer = "";
+      result += " ";
+    }
+  }
+  document.getElementById("output").innerText = result;
 }
 </script>
 
 </body>
-  </html>
+</html>
