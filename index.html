@@ -5,134 +5,128 @@ index.html
 <meta charset="UTF-8">
 <title>XÆRTH Multi-Language Translator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body {
-  background:black;
-  color:lime;
-  font-family:monospace;
-  text-align:center;
-  margin:0;
-  padding:0;
+body{
+background:black;
+color:lime;
+font-family:monospace;
+text-align:center;
+margin:0;
 }
 
-/* Pantalla de bienvenida */
-#welcomeScreen {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:black;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-}
-#welcomeScreen h1 {
-  font-size:24px;
-  margin-bottom:20px;
-}
-#welcomeScreen button {
-  padding:10px 20px;
-  cursor:pointer;
-  font-size:16px;
+/* Bienvenida */
+#welcomeScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:999;
 }
 
-/* Botón idiomas esquina derecha */
-#menuIdiomas {
-  position:fixed;
-  top:10px;
-  right:10px;
-  background:darkgreen;
-  color:white;
-  padding:5px 10px;
-  cursor:pointer;
-  border-radius:5px;
-  z-index:1000;
+button{
+padding:8px 15px;
+cursor:pointer;
+margin:5px;
 }
 
-/* Menú desplegable de idiomas */
-#langSelect {
-  display:none;
-  position:fixed;
-  top:40px;
-  right:10px;
-  background:black;
-  color:lime;
-  border:1px solid lime;
-  padding:5px;
-  z-index:1000;
+/* menú idiomas */
+#menuIdiomas{
+position:fixed;
+top:10px;
+right:10px;
+background:darkgreen;
+color:white;
+padding:5px 10px;
+border-radius:5px;
+cursor:pointer;
 }
 
-/* Área de texto y botones */
-textarea {
-  width:80%;
-  height:100px;
-  margin-top:60px;
-}
-button {
-  margin-top:10px;
-  padding:5px 10px;
-  cursor:pointer;
-}
-p.note {
-  color:red;
-  font-size:14px;
+#langSelect{
+display:none;
+position:fixed;
+top:40px;
+right:10px;
+background:black;
+color:lime;
+border:1px solid lime;
 }
 
-/* Responsivo */
-@media screen and (max-width: 600px) {
-  textarea { width:95%; height:120px; }
-  #menuIdiomas { font-size:14px; padding:5px 8px; }
-  #langSelect { font-size:14px; }
-  button { font-size:14px; }
+/* textarea */
+textarea{
+margin-top:60px;
+width:80%;
+height:110px;
 }
-@media screen and (min-width: 601px) {
-  textarea { width:60%; height:100px; }
-  #menuIdiomas { font-size:16px; padding:5px 10px; }
-  button { font-size:16px; }
+
+.note{
+color:red;
+}
+
+/* responsive */
+@media(max-width:600px){
+textarea{width:95%;}
 }
 </style>
 </head>
+
 <body>
 
-<!-- Pantalla de Bienvenida -->
+<!-- BIENVENIDA -->
 <div id="welcomeScreen">
-  <h1>Bienvenido a el TRADUCTOR XÆRTH</h1>
-  <button onclick="entrar()">Entrar</button>
+<h1>Bienvenido a el TRADUCTOR XÆRTH</h1>
+<button onclick="entrar()">Entrar</button>
 </div>
 
-<!-- Traductor -->
 <h1>XÆRTH SYSTEM</h1>
-<p class="note">Este traductor es nuevo, y todavía estamos trabajando para mejorarlo.</p>
+<p class="note">
+Este traductor es nuevo, y todavía estamos trabajando para mejorarlo.
+</p>
 
 <div id="menuIdiomas" onclick="toggleMenu()">Idiomas ▼</div>
+
 <select id="langSelect">
-  <option value="espanol">Español</option>
-  <option value="ingles">Inglés</option>
-  <option value="frances">Francés</option>
-  <option value="aleman">Alemán</option>
-  <option value="italiano">Italiano</option>
-  <option value="portugues">Portugués</option>
-  <option value="japones">Japonés</option>
-  <option value="coreano">Coreano</option>
-  <option value="ruso">Ruso</option>
-  <option value="arabe">Árabe</option>
-  <option value="chino">Chino Simplificado</option>
+<option value="espanol">Español</option>
+<option value="ingles">Inglés</option>
+<option value="frances">Francés</option>
+<option value="aleman">Alemán</option>
+<option value="italiano">Italiano</option>
+<option value="portugues">Portugués</option>
+<option value="japones">Japonés</option>
+<option value="coreano">Coreano</option>
+<option value="ruso">Ruso</option>
+<option value="arabe">Árabe</option>
+<option value="chino">Chino Simplificado</option>
 </select>
 
 <textarea id="input"></textarea><br>
-<button onclick="traducir()">Traducir</button>
+
+<button onclick="traducir()">Idioma → XÆRTH</button>
+<button onclick="traducirDesdeXaerth()">XÆRTH → Idioma</button>
 
 <p id="output"></p>
 
 <script>
-// Entrar desde pantalla de bienvenida
+
+/* entrar */
 function entrar(){
-  document.getElementById("welcomeScreen").style.display = "none";
+document.getElementById("welcomeScreen").style.display="none";
 }
 
-// Alfabeto XÆRTH
-const map = {
+/* menú idiomas */
+function toggleMenu(){
+let m=document.getElementById("langSelect");
+m.style.display=m.style.display==="block"?"none":"block";
+}
+
+/* ALFABETO XÆRTH */
+const map={
 "A":"|ʌ","B":"|•","C":"|⌒","D":"|ˣ",
 "E":"─ʌ","F":"─•","G":"─⌒","H":"─ˣ",
 "I":"∥ʌ","J":"∥•","K":"∥⌒","L":"∥ˣ",
@@ -142,52 +136,82 @@ const map = {
 "X":"◇ʌ","Y":"◇•","Z":"◇⌒"
 };
 
-// Diccionarios simples (ejemplos)
-const diccionarios = {
-  espanol: {},
-  ingles: {"HELLO":"HOLA","GOODBYE":"ADIOS","FRIEND":"AMIGO"},
-  frances: {"BONJOUR":"HOLA","AU REVOIR":"ADIOS","AMI":"AMIGO"},
-  aleman: {"HALLO":"HOLA","AUF WIEDERSEHEN":"ADIOS","FREUND":"AMIGO"},
-  italiano: {"CIAO":"HOLA","ADDIO":"ADIOS","AMICO":"AMIGO"},
-  portugues: {"OLÁ":"HOLA","ADEUS":"ADIOS","AMIGO":"AMIGO"},
-  japones: {"こんにちは":"HOLA","さようなら":"ADIOS","友達":"AMIGO"},
-  coreano: {"안녕하세요":"HOLA","안녕히 가세요":"ADIOS","친구":"AMIGO"},
-  ruso: {"ПРИВЕТ":"HOLA","ДО СВИДАНИЯ":"ADIOS","ДРУГ":"AMIGO"},
-  arabe: {"مرحبا":"HOLA","مع السلامة":"ADIOS","صديق":"AMIGO"},
-  chino: {"你好":"HOLA","再见":"ADIOS","朋友":"AMIGO"}
+/* MAPA INVERSO */
+const reverseMap={};
+for(let l in map){
+reverseMap[map[l]]=l;
+}
+
+/* diccionarios */
+const diccionarios={
+espanol:{},
+ingles:{"HELLO":"HOLA","GOODBYE":"ADIOS","FRIEND":"AMIGO"},
+frances:{"BONJOUR":"HOLA","AMI":"AMIGO"},
+aleman:{"HALLO":"HOLA","FREUND":"AMIGO"},
+italiano:{"CIAO":"HOLA","AMICO":"AMIGO"},
+portugues:{"OLÁ":"HOLA","AMIGO":"AMIGO"},
+japones:{"こんにちは":"HOLA"},
+coreano:{"안녕하세요":"HOLA"},
+ruso:{"ПРИВЕТ":"HOLA"},
+arabe:{"مرحبا":"HOLA"},
+chino:{"你好":"HOLA"}
 };
 
-// Mostrar/ocultar menú
-function toggleMenu(){
-  const select = document.getElementById("langSelect");
-  select.style.display = select.style.display === "block" ? "none" : "block";
-}
-
-// Función traducir bidireccional
+/* Idioma → XÆRTH */
 function traducir(){
-  let lang = document.getElementById("langSelect").value;
-  let text = document.getElementById("input").value.toUpperCase();
-  let dic = diccionarios[lang];
 
-  let words = text.split(" ");
-  let resultEsp = "";
+let lang=document.getElementById("langSelect").value;
+let text=document.getElementById("input").value.toUpperCase();
+let dic=diccionarios[lang];
 
-  if(lang === "espanol"){ 
-    // Español → XÆRTH
-    resultEsp = words.map(w => w).join(" ");
-  } else {
-    // Otro idioma → Español
-    resultEsp = words.map(w => dic[w] ? dic[w] : w).join(" ");
-  }
+let words=text.split(" ");
 
-  // Convertir Español → XÆRTH
-  let resultXaerth = "";
-  for(let i=0;i<resultEsp.length;i++){
-    let c = resultEsp[i];
-    resultXaerth += map[c] ? map[c]+" " : c;
-  }
-  document.getElementById("output").innerText = resultXaerth.trim();
+let esp=lang==="espanol"
+? words.join(" ")
+: words.map(w=>dic[w]||w).join(" ");
+
+let result="";
+for(let c of esp){
+result+=map[c]?map[c]+" ":c;
 }
+
+document.getElementById("output").innerText=result.trim();
+}
+
+/* XÆRTH → Idioma */
+function traducirDesdeXaerth(){
+
+let lang=document.getElementById("langSelect").value;
+let text=document.getElementById("input").value.trim();
+
+let simbolos=text.split(" ");
+let esp="";
+
+simbolos.forEach(s=>{
+esp+=reverseMap[s]?reverseMap[s]:" ";
+});
+
+esp=esp.trim();
+
+if(lang==="espanol"){
+document.getElementById("output").innerText=esp;
+return;
+}
+
+let dic=diccionarios[lang];
+let invertido={};
+
+for(let k in dic){
+invertido[dic[k]]=k;
+}
+
+let final=esp.split(" ")
+.map(p=>invertido[p]||p)
+.join(" ");
+
+document.getElementById("output").innerText=final;
+}
+
 </script>
 
 </body>
