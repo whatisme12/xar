@@ -4,6 +4,7 @@ index.html
 <head>
 <meta charset="UTF-8">
 <title>XÆRTH Multi-Language Translator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
   background:black;
@@ -13,6 +14,30 @@ body {
   margin:0;
   padding:0;
 }
+
+/* Pantalla de bienvenida */
+#welcomeScreen {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:black;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+#welcomeScreen h1 {
+  font-size:24px;
+  margin-bottom:20px;
+}
+#welcomeScreen button {
+  padding:10px 20px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+/* Botón idiomas esquina derecha */
 #menuIdiomas {
   position:fixed;
   top:10px;
@@ -22,7 +47,10 @@ body {
   padding:5px 10px;
   cursor:pointer;
   border-radius:5px;
+  z-index:1000;
 }
+
+/* Menú desplegable de idiomas */
 #langSelect {
   display:none;
   position:fixed;
@@ -32,7 +60,10 @@ body {
   color:lime;
   border:1px solid lime;
   padding:5px;
+  z-index:1000;
 }
+
+/* Área de texto y botones */
 textarea {
   width:80%;
   height:100px;
@@ -40,21 +71,43 @@ textarea {
 }
 button {
   margin-top:10px;
+  padding:5px 10px;
+  cursor:pointer;
 }
 p.note {
   color:red;
   font-size:14px;
 }
+
+/* Responsivo */
+@media screen and (max-width: 600px) {
+  textarea { width:95%; height:120px; }
+  #menuIdiomas { font-size:14px; padding:5px 8px; }
+  #langSelect { font-size:14px; }
+  button { font-size:14px; }
+}
+@media screen and (min-width: 601px) {
+  textarea { width:60%; height:100px; }
+  #menuIdiomas { font-size:16px; padding:5px 10px; }
+  button { font-size:16px; }
+}
 </style>
 </head>
 <body>
 
+<!-- Pantalla de Bienvenida -->
+<div id="welcomeScreen">
+  <h1>Bienvenido a el TRADUCTOR XÆRTH</h1>
+  <button onclick="entrar()">Entrar</button>
+</div>
+
+<!-- Traductor -->
 <h1>XÆRTH SYSTEM</h1>
 <p class="note">Este traductor es nuevo, y todavía estamos trabajando para mejorarlo.</p>
 
-<!-- Botón esquina derecha -->
 <div id="menuIdiomas" onclick="toggleMenu()">Idiomas ▼</div>
 <select id="langSelect">
+  <option value="espanol">Español</option>
   <option value="ingles">Inglés</option>
   <option value="frances">Francés</option>
   <option value="aleman">Alemán</option>
@@ -68,11 +121,16 @@ p.note {
 </select>
 
 <textarea id="input"></textarea><br>
-<button onclick="traducirAXaerth()">Traducir a XÆRTH</button>
+<button onclick="traducir()">Traducir</button>
 
 <p id="output"></p>
 
 <script>
+// Entrar desde pantalla de bienvenida
+function entrar(){
+  document.getElementById("welcomeScreen").style.display = "none";
+}
+
 // Alfabeto XÆRTH
 const map = {
 "A":"|ʌ","B":"|•","C":"|⌒","D":"|ˣ",
@@ -84,8 +142,9 @@ const map = {
 "X":"◇ʌ","Y":"◇•","Z":"◇⌒"
 };
 
-// Diccionarios simples por idioma (ejemplos)
+// Diccionarios simples (ejemplos)
 const diccionarios = {
+  espanol: {},
   ingles: {"HELLO":"HOLA","GOODBYE":"ADIOS","FRIEND":"AMIGO"},
   frances: {"BONJOUR":"HOLA","AU REVOIR":"ADIOS","AMI":"AMIGO"},
   aleman: {"HALLO":"HOLA","AUF WIEDERSEHEN":"ADIOS","FREUND":"AMIGO"},
@@ -104,15 +163,24 @@ function toggleMenu(){
   select.style.display = select.style.display === "block" ? "none" : "block";
 }
 
-// Traducir a XÆRTH
-function traducirAXaerth(){
+// Función traducir bidireccional
+function traducir(){
   let lang = document.getElementById("langSelect").value;
   let text = document.getElementById("input").value.toUpperCase();
   let dic = diccionarios[lang];
+
   let words = text.split(" ");
-  let resultEsp = words.map(w => dic[w] ? dic[w] : w).join(" ");
-  
-  // Ahora convertimos a XÆRTH
+  let resultEsp = "";
+
+  if(lang === "espanol"){ 
+    // Español → XÆRTH
+    resultEsp = words.map(w => w).join(" ");
+  } else {
+    // Otro idioma → Español
+    resultEsp = words.map(w => dic[w] ? dic[w] : w).join(" ");
+  }
+
+  // Convertir Español → XÆRTH
   let resultXaerth = "";
   for(let i=0;i<resultEsp.length;i++){
     let c = resultEsp[i];
