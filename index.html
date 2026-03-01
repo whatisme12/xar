@@ -1,217 +1,178 @@
-index.html
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>XÆRTH Multi-Language Translator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>Traductor XÆRTH</title>
+<!-- Fuente pixel -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-body{
-background:black;
-color:lime;
-font-family:monospace;
-text-align:center;
-margin:0;
-}
+    body {
+        margin: 0;
+        font-family: 'Press Start 2P', cursive;
+        background-color: #000;
+        color: #0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-/* Bienvenida */
-#welcomeScreen{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:999;
-}
+    /* Anuncio */
+    #anuncio {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.95);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        text-align: center;
+    }
 
-button{
-padding:8px 15px;
-cursor:pointer;
-margin:5px;
-}
+    #anuncio h1, #anuncio p {
+        margin: 10px;
+    }
 
-/* menú idiomas */
-#menuIdiomas{
-position:fixed;
-top:10px;
-right:10px;
-background:darkgreen;
-color:white;
-padding:5px 10px;
-border-radius:5px;
-cursor:pointer;
-}
+    #cerrar {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #f00;
+    }
 
-#langSelect{
-display:none;
-position:fixed;
-top:40px;
-right:10px;
-background:black;
-color:lime;
-border:1px solid lime;
-}
+    /* Reloj de arena pixel */
+    #reloj {
+        font-size: 24px;
+        margin: 20px;
+        animation: parpadeo 1s infinite;
+    }
 
-/* textarea */
-textarea{
-margin-top:60px;
-width:80%;
-height:110px;
-}
+    @keyframes parpadeo {
+        0%, 100% {opacity: 1;}
+        50% {opacity: 0.3;}
+    }
 
-.note{
-color:red;
-}
+    /* Contador */
+    #contador {
+        font-size: 16px;
+        margin-top: 10px;
+    }
 
-/* responsive */
-@media(max-width:600px){
-textarea{width:95%;}
-}
+    /* Contenido principal */
+    #contenido {
+        display: none;
+        width: 90%;
+        max-width: 600px;
+        margin-top: 40px;
+        text-align: center;
+    }
+
+    #contenido textarea {
+        width: 100%;
+        height: 100px;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 12px;
+    }
+
+    #contenido button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    select {
+        margin-bottom: 10px;
+        padding: 5px;
+        font-family: 'Press Start 2P', cursive;
+    }
 </style>
 </head>
-
 <body>
 
-<!-- BIENVENIDA -->
-<div id="welcomeScreen">
-<h1>Bienvenido a el TRADUCTOR XÆRTH</h1>
-<button onclick="entrar()">Entrar</button>
+<!-- ANUNCIO -->
+<div id="anuncio">
+    <div id="cerrar">X</div>
+    <h1>NUESTRO TRADUCTOR XÆRTH ESTARÁ EN MANTENIMIENTO EL DÍA 1 DE MARZO</h1>
+    <h1>Y VOLVERÁ TAMBIÉN EL DÍA 1 DE MARZO</h1>
+    <div id="reloj">⌛</div>
+    <div id="contador"></div>
 </div>
 
-<h1>XÆRTH SYSTEM</h1>
-<p class="note">
-Este traductor es nuevo, y todavía estamos trabajando para mejorarlo.
-</p>
+<!-- CONTENIDO PRINCIPAL -->
+<div id="contenido">
+    <h1>BIENVENIDO A TRADUCTOR DE XÆRTH</h1>
 
-<div id="menuIdiomas" onclick="toggleMenu()">Idiomas ▼</div>
+    <select id="idiomas">
+        <option value="es">Español</option>
+        <option value="en">Inglés</option>
+        <option value="fr">Francés</option>
+        <option value="de">Alemán</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Portugués</option>
+        <option value="jp">Japonés</option>
+        <option value="ko">Coreano</option>
+        <option value="ru">Ruso</option>
+        <option value="ar">Árabe</option>
+        <option value="cn">Chino Simplificado</option>
+        <option value="xaerth">XÆRTH</option>
+    </select>
 
-<select id="langSelect">
-<option value="espanol">Español</option>
-<option value="ingles">Inglés</option>
-<option value="frances">Francés</option>
-<option value="aleman">Alemán</option>
-<option value="italiano">Italiano</option>
-<option value="portugues">Portugués</option>
-<option value="japones">Japonés</option>
-<option value="coreano">Coreano</option>
-<option value="ruso">Ruso</option>
-<option value="arabe">Árabe</option>
-<option value="chino">Chino Simplificado</option>
-</select>
-
-<textarea id="input"></textarea><br>
-
-<button onclick="traducir()">Idioma → XÆRTH</button>
-<button onclick="traducirDesdeXaerth()">XÆRTH → Idioma</button>
-
-<p id="output"></p>
+    <textarea id="entrada" placeholder="Escribe aquí..."></textarea><br>
+    <button onclick="traducir('aXaerth')">Idioma → XÆRTH</button>
+    <button onclick="traducir('aEsp')">XÆRTH → Idioma</button>
+    <textarea id="salida" placeholder="Resultado..." readonly></textarea>
+</div>
 
 <script>
+    // ANUNCIO
+    const anuncio = document.getElementById('anuncio');
+    document.getElementById('cerrar').addEventListener('click', () => {
+        anuncio.style.display = 'none';
+        document.getElementById('contenido').style.display = 'block';
+    });
 
-/* entrar */
-function entrar(){
-document.getElementById("welcomeScreen").style.display="none";
-}
+    // CONTADOR HASTA 13:00
+    function actualizarContador() {
+        const ahora = new Date();
+        const destino = new Date();
+        destino.setHours(13,0,0,0);
+        let diff = destino - ahora;
+        if(diff < 0) diff = 0;
+        const horas = Math.floor(diff / (1000*60*60));
+        const min = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const seg = Math.floor((diff % (1000*60)) / 1000);
+        document.getElementById('contador').innerText = `Tiempo restante: ${horas}h ${min}m ${seg}s`;
+    }
+    setInterval(actualizarContador, 1000);
 
-/* menú idiomas */
-function toggleMenu(){
-let m=document.getElementById("langSelect");
-m.style.display=m.style.display==="block"?"none":"block";
-}
-
-/* ALFABETO XÆRTH */
-const map={
-"A":"|ʌ","B":"|•","C":"|⌒","D":"|ˣ",
-"E":"─ʌ","F":"─•","G":"─⌒","H":"─ˣ",
-"I":"∥ʌ","J":"∥•","K":"∥⌒","L":"∥ˣ",
-"M":"/ʌ","N":"/•","Ñ":"/⌒","O":"/ˣ",
-"P":"\\ʌ","Q":"\\•","R":"\\⌒","S":"\\ˣ",
-"T":"+ʌ","U":"+•","V":"+⌒","W":"+ˣ",
-"X":"◇ʌ","Y":"◇•","Z":"◇⌒"
-};
-
-/* MAPA INVERSO */
-const reverseMap={};
-for(let l in map){
-reverseMap[map[l]]=l;
-}
-
-/* diccionarios */
-const diccionarios={
-espanol:{},
-ingles:{"HELLO":"HOLA","GOODBYE":"ADIOS","FRIEND":"AMIGO"},
-frances:{"BONJOUR":"HOLA","AMI":"AMIGO"},
-aleman:{"HALLO":"HOLA","FREUND":"AMIGO"},
-italiano:{"CIAO":"HOLA","AMICO":"AMIGO"},
-portugues:{"OLÁ":"HOLA","AMIGO":"AMIGO"},
-japones:{"こんにちは":"HOLA"},
-coreano:{"안녕하세요":"HOLA"},
-ruso:{"ПРИВЕТ":"HOLA"},
-arabe:{"مرحبا":"HOLA"},
-chino:{"你好":"HOLA"}
-};
-
-/* Idioma → XÆRTH */
-function traducir(){
-
-let lang=document.getElementById("langSelect").value;
-let text=document.getElementById("input").value.toUpperCase();
-let dic=diccionarios[lang];
-
-let words=text.split(" ");
-
-let esp=lang==="espanol"
-? words.join(" ")
-: words.map(w=>dic[w]||w).join(" ");
-
-let result="";
-for(let c of esp){
-result+=map[c]?map[c]+" ":c;
-}
-
-document.getElementById("output").innerText=result.trim();
-}
-
-/* XÆRTH → Idioma */
-function traducirDesdeXaerth(){
-
-let lang=document.getElementById("langSelect").value;
-let text=document.getElementById("input").value.trim();
-
-let simbolos=text.split(" ");
-let esp="";
-
-simbolos.forEach(s=>{
-esp+=reverseMap[s]?reverseMap[s]:" ";
-});
-
-esp=esp.trim();
-
-if(lang==="espanol"){
-document.getElementById("output").innerText=esp;
-return;
-}
-
-let dic=diccionarios[lang];
-let invertido={};
-
-for(let k in dic){
-invertido[dic[k]]=k;
-}
-
-let final=esp.split(" ")
-.map(p=>invertido[p]||p)
-.join(" ");
-
-document.getElementById("output").innerText=final;
-}
-
+    // TRADUCTOR SIMPLE XAERTH
+    function traducir(direccion){
+        const texto = document.getElementById('entrada').value;
+        let resultado = "";
+        if(direccion === 'aXaerth'){
+            // Ejemplo de traducción a XAERTH Nivel básico
+            resultado = texto.split('').map(c => {
+                const mapa = {'a':'æ','e':'ë','i':'ï','o':'ø','u':'ü','A':'Æ','E':'Ë','I':'Ï','O':'Ø','U':'Ü'};
+                return mapa[c] || c;
+            }).join('');
+        } else {
+            // Ejemplo simple de vuelta a español
+            resultado = texto.split('').map(c => {
+                const mapa = {'æ':'a','ë':'e','ï':'i','ø':'o','ü':'u','Æ':'A','Ë':'E','Ï':'I','Ø':'O','Ü':'U'};
+                return mapa[c] || c;
+            }).join('');
+        }
+        document.getElementById('salida').value = resultado;
+    }
 </script>
 
 </body>
