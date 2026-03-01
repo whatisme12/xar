@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Traductor XÆRTH Secreto</title>
+<title>Mantenimiento Traductor XÆRTH</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 body {
@@ -14,120 +14,76 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
-}
-
-/* Anuncio */
-#anuncio {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.95);
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    min-height: 100vh;
     text-align: center;
-    z-index: 9999;
 }
-#anuncio h1 {margin: 8px; font-size: 12px;} /* letra más pequeña */
-#cerrar {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 18px; /* un poco más pequeño */
+
+/* Mensaje principal */
+#mensaje {
+    font-size: 14px;
+    max-width: 90%;
+    margin-bottom: 20px;
+    transition: color 0.3s;
+}
+
+/* Contador */
+#contador {
+    font-size: 12px;
+    margin-bottom: 30px;
+}
+
+/* Botón pixel */
+#contacto {
+    display: inline-block;
+    background-color: #00f;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    border: 2px solid #00f;
     cursor: pointer;
-    color: #f00;
+    margin-top: 10px;
+}
+#contacto:hover {
+    background-color: #0000aa;
 }
 
-/* Reloj de arena y contador */
-#reloj {font-size: 20px; animation: parpadeo 1s infinite;}
-@keyframes parpadeo {0%,100%{opacity:1}50%{opacity:0.3}}
-#contador {margin-top:10px;font-size:12px;}
-
-/* Contenido principal */
-#contenido {display:none; width:95%; max-width:650px; margin-top:30px; text-align:center;} /* más ancho en móvil */
-textarea {width:100%; height:100px; font-family:'Press Start 2P'; font-size:10px;} /* letra más pequeña */
-button {margin:8px; padding:8px 16px; font-family:'Press Start 2P'; font-size:10px; cursor:pointer;}
-select {margin-bottom:8px; padding:4px; font-family:'Press Start 2P'; font-size:10px;}
+/* Flecha */
+#contacto::before {
+    content: "↘️ ";
+}
 </style>
 </head>
 <body>
 
-<div id="anuncio">
-    <div id="cerrar">X</div>
-    <h1>NUESTRO TRADUCTOR XÆRTH ESTARÁ EN MANTENIMIENTO EL DÍA 1 DE MARZO</h1>
-    <h1>Y VOLVERÁ TAMBIÉN EL DÍA 1 DE MARZO</h1>
-    <div id="reloj">⌛</div>
-    <div id="contador"></div>
-</div>
-
-<div id="contenido">
-    <h1>BIENVENIDO A TRADUCTOR DE XÆRTH</h1>
-    <select id="idiomas">
-        <option value="es">Español</option>
-        <option value="en">Inglés</option>
-        <option value="fr">Francés</option>
-        <option value="de">Alemán</option>
-        <option value="it">Italiano</option>
-        <option value="pt">Portugués</option>
-        <option value="jp">Japonés</option>
-        <option value="ko">Coreano</option>
-        <option value="ru">Ruso</option>
-        <option value="ar">Árabe</option>
-        <option value="cn">Chino Simplificado</option>
-        <option value="xaerth">XÆRTH</option>
-    </select>
-    <textarea id="entrada" placeholder="Escribe aquí..."></textarea><br>
-    <button onclick="traducir('aXaerth')">Idioma → XÆRTH</button>
-    <button onclick="traducir('aEsp')">XÆRTH → Idioma</button>
-    <textarea id="salida" placeholder="Resultado..." readonly></textarea>
-</div>
+<div id="mensaje">Estamos teniendo problemas con el traductor de XAERTH, próximamente se encontrará nuevamente disponible</div>
+<div id="contador">HORARIO ESPERADO: 00h 00m 00s</div>
+<a id="contacto" href="mailto:Xaerth@gmail.com">CONTACTAR</a>
 
 <script>
-const anuncio = document.getElementById('anuncio');
-document.getElementById('cerrar').onclick = ()=>{anuncio.style.display='none';document.getElementById('contenido').style.display='block'}
+// Cambiar color de las letras aleatoriamente entre rojo, verde y azul
+const mensaje = document.getElementById('mensaje');
+const colores = ['#f00','#0f0','#00f'];
+setInterval(() => {
+    mensaje.style.color = colores[Math.floor(Math.random()*colores.length)];
+}, 500);
 
-// Contador hasta 13:00
+// Contador hasta 13:00 PM CL
 function actualizarContador(){
-    const ahora=new Date();
-    const destino=new Date();
-    destino.setHours(13,0,0,0);
-    let diff=destino-ahora;
-    if(diff<0) diff=0;
-    const h=Math.floor(diff/(1000*60*60));
-    const m=Math.floor((diff%(1000*60*60))/(1000*60));
-    const s=Math.floor((diff%(1000*60))/1000);
-    document.getElementById('contador').innerText=`Tiempo restante: ${h}h ${m}m ${s}s`;
+    const ahora = new Date();
+    const destino = new Date();
+    destino.setHours(13,0,0,0); // 13:00
+    let diff = destino - ahora;
+    if(diff < 0) diff = 0;
+    const h = Math.floor(diff / (1000*60*60));
+    const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const s = Math.floor((diff % (1000*60)) / 1000);
+    document.getElementById('contador').innerText = `HORARIO ESPERADO: ${h}h ${m}m ${s}s`;
 }
-setInterval(actualizarContador,1000);
-
-// FUNCIONES DE XAERTH SECRETO
-function codificarXAERTH(texto){
-    const simbolos = ['Δ','Ψ','ζ','ξ','Ω','Λ','Θ','Φ','Σ','Ξ'];
-    let resultado='';
-    for(let i=0;i<texto.length;i++){
-        const c = texto.charCodeAt(i);
-        const pos = i+1;
-        const s = simbolos[(c+pos)%simbolos.length];
-        resultado += s;
-    }
-    return 'XR-'+resultado+'-R̴';
-}
-
-function decodificarXAERTH(texto){
-    // Solo reversible con el patrón exacto
-    return "[CONTENIDO SECRETO - REQUIERE CLAVE INTERNA]";
-}
-
-function traducir(direccion){
-    const texto=document.getElementById('entrada').value;
-    let res='';
-    if(direccion==='aXaerth') res=codificarXAERTH(texto);
-    else res=decodificarXAERTH(texto);
-    document.getElementById('salida').value=res;
-}
+setInterval(actualizarContador, 1000);
+actualizarContador();
 </script>
 
 </body>
