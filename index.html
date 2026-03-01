@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>XÆRTH Translator</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -15,8 +14,6 @@ text-align:center;
 margin:0;
 }
 
-h1{margin-top:30px;}
-
 textarea{
 width:90%;
 height:120px;
@@ -24,6 +21,7 @@ background:black;
 color:lime;
 border:1px solid lime;
 font-size:16px;
+margin-top:20px;
 }
 
 button{
@@ -38,7 +36,7 @@ cursor:pointer;
 #output{
 margin-top:20px;
 font-size:18px;
-word-wrap:break-word;
+word-break:break-word;
 }
 </style>
 </head>
@@ -47,17 +45,17 @@ word-wrap:break-word;
 
 <h1>XÆRTH TRANSLATOR</h1>
 
-<textarea id="input" placeholder="Escribe aquí..."></textarea>
+<textarea id="input" placeholder="Escribe Español o XÆRTH..."></textarea>
+
 <br>
 
-<button onclick="aXaerth()">Español → XÆRTH</button>
-<button onclick="aEspanol()">XÆRTH → Español</button>
+<button onclick="traducir()">TRADUCIR</button>
 
 <p id="output"></p>
 
 <script>
 
-/* ===== ALFABETO XÆRTH ===== */
+/* ===== ALFABETO ===== */
 
 const mapa = {
 "A":"|ʌ","B":"|•","C":"|⌒","D":"|ˣ",
@@ -69,71 +67,56 @@ const mapa = {
 "X":"◇ʌ","Y":"◇•","Z":"◇⌒"
 };
 
-/* ===== INVERSO (CLAVE DEL ARREGLO) ===== */
-
-const mapaInverso = {};
+/* crear mapa inverso */
+const inverso={};
 for(let letra in mapa){
-mapaInverso[mapa[letra]] = letra;
+inverso[mapa[letra]]=letra;
 }
 
-/* ===== ESPAÑOL → XÆRTH ===== */
+/* detectar si es XAERTH */
+function esXaerth(texto){
+return texto.includes("ʌ") ||
+texto.includes("•") ||
+texto.includes("⌒") ||
+texto.includes("ˣ");
+}
 
-function aXaerth(){
+/* ===== TRADUCTOR INTELIGENTE ===== */
+
+function traducir(){
 
 let texto =
 document.getElementById("input")
-.value
-.toUpperCase();
+.value.toUpperCase();
 
 let resultado="";
 
-for(let i=0;i<texto.length;i++){
+/* SI ES XAERTH → ESPAÑOL */
 
-let c = texto[i];
+if(esXaerth(texto)){
 
-if(mapa[c]){
-resultado += mapa[c]+" ";
+let i=0;
+
+while(i<texto.length){
+
+let simbolo = texto.substring(i,i+2);
+
+if(inverso[simbolo]){
+resultado += inverso[simbolo];
+i+=2;
 }else{
-resultado += c;
+resultado += texto[i];
+i++;
 }
 
 }
 
-document.getElementById("output")
-.innerText = resultado.trim();
 }
 
-/* ===== XÆRTH → ESPAÑOL ===== */
+/* SI ES ESPAÑOL → XAERTH */
 
-function aEspanol(){
+else{
 
-let texto =
-document.getElementById("input")
-.value
-.trim();
+for(let letra of texto){
 
-/* IMPORTANTE:
-separamos por espacios
-cada símbolo es una letra
-*/
-
-let simbolos = texto.split(" ");
-
-let resultado="";
-
-simbolos.forEach(simbolo=>{
-if(mapaInverso[simbolo]){
-resultado += mapaInverso[simbolo];
-}else{
-resultado += simbolo;
-}
-});
-
-document.getElementById("output")
-.innerText = resultado;
-}
-
-</script>
-
-</body>
-</html>
+if(mapa[letra]){
