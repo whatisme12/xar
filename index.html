@@ -1,89 +1,138 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
 <meta charset="UTF-8">
+<title>XÆRTH Translator</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mantenimiento Traductor XÆRTH</title>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 <style>
-body {
-    margin: 0;
-    font-family: 'Press Start 2P', cursive;
-    background: #000;
-    color: #0f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
+body{
+background:black;
+color:lime;
+font-family:monospace;
+text-align:center;
+margin:0;
 }
 
-/* Mensaje principal */
-#mensaje {
-    font-size: 14px;
-    max-width: 90%;
-    margin-bottom: 20px;
-    transition: color 0.3s;
+h1{margin-top:30px;}
+
+textarea{
+width:90%;
+height:120px;
+background:black;
+color:lime;
+border:1px solid lime;
+font-size:16px;
 }
 
-/* Contador */
-#contador {
-    font-size: 12px;
-    margin-bottom: 30px;
+button{
+margin:10px;
+padding:10px;
+background:black;
+color:lime;
+border:1px solid lime;
+cursor:pointer;
 }
 
-/* Botón pixel */
-#contacto {
-    display: inline-block;
-    background-color: #00f;
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 12px;
-    border: 2px solid #00f;
-    cursor: pointer;
-    margin-top: 10px;
-}
-#contacto:hover {
-    background-color: #0000aa;
-}
-
-/* Flecha */
-#contacto::before {
-    content: "✉️ ";
+#output{
+margin-top:20px;
+font-size:18px;
+word-wrap:break-word;
 }
 </style>
 </head>
+
 <body>
 
-<div id="mensaje">Estamos teniendo problemas con el traductor de XAERTH, próximamente se encontrará nuevamente disponible</div>
-<div id="contador">HORARIO ESPERADO: 00h 00m 00s</div>
-<a id="contacto" href="mailto:somosxaerth@gmail.com">CONTACTAR</a>
+<h1>XÆRTH TRANSLATOR</h1>
+
+<textarea id="input" placeholder="Escribe aquí..."></textarea>
+<br>
+
+<button onclick="aXaerth()">Español → XÆRTH</button>
+<button onclick="aEspanol()">XÆRTH → Español</button>
+
+<p id="output"></p>
 
 <script>
-// Cambiar color de las letras aleatoriamente entre rojo, verde y azul
-const mensaje = document.getElementById('mensaje');
-const colores = ['#f00','#0f0','#00f'];
-setInterval(() => {
-    mensaje.style.color = colores[Math.floor(Math.random()*colores.length)];
-}, 500);
 
-// Contador hasta 13:00 PM CL
-function actualizarContador(){
-    const ahora = new Date();
-    const destino = new Date();
-    destino.setHours(13,0,0,0); // 13:00
-    let diff = destino - ahora;
-    if(diff < 0) diff = 0;
-    const h = Math.floor(diff / (1000*60*60));
-    const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const s = Math.floor((diff % (1000*60)) / 1000);
-    document.getElementById('contador').innerText = `HORARIO ESPERADO: ${h}h ${m}m ${s}s`;
+/* ===== ALFABETO XÆRTH ===== */
+
+const mapa = {
+"A":"|ʌ","B":"|•","C":"|⌒","D":"|ˣ",
+"E":"─ʌ","F":"─•","G":"─⌒","H":"─ˣ",
+"I":"∥ʌ","J":"∥•","K":"∥⌒","L":"∥ˣ",
+"M":"/ʌ","N":"/•","Ñ":"/⌒","O":"/ˣ",
+"P":"\\ʌ","Q":"\\•","R":"\\⌒","S":"\\ˣ",
+"T":"+ʌ","U":"+•","V":"+⌒","W":"+ˣ",
+"X":"◇ʌ","Y":"◇•","Z":"◇⌒"
+};
+
+/* ===== INVERSO (CLAVE DEL ARREGLO) ===== */
+
+const mapaInverso = {};
+for(let letra in mapa){
+mapaInverso[mapa[letra]] = letra;
 }
-setInterval(actualizarContador, 1000);
-actualizarContador();
+
+/* ===== ESPAÑOL → XÆRTH ===== */
+
+function aXaerth(){
+
+let texto =
+document.getElementById("input")
+.value
+.toUpperCase();
+
+let resultado="";
+
+for(let i=0;i<texto.length;i++){
+
+let c = texto[i];
+
+if(mapa[c]){
+resultado += mapa[c]+" ";
+}else{
+resultado += c;
+}
+
+}
+
+document.getElementById("output")
+.innerText = resultado.trim();
+}
+
+/* ===== XÆRTH → ESPAÑOL ===== */
+
+function aEspanol(){
+
+let texto =
+document.getElementById("input")
+.value
+.trim();
+
+/* IMPORTANTE:
+separamos por espacios
+cada símbolo es una letra
+*/
+
+let simbolos = texto.split(" ");
+
+let resultado="";
+
+simbolos.forEach(simbolo=>{
+if(mapaInverso[simbolo]){
+resultado += mapaInverso[simbolo];
+}else{
+resultado += simbolo;
+}
+});
+
+document.getElementById("output")
+.innerText = resultado;
+}
+
 </script>
 
 </body>
