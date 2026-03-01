@@ -3,102 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Traductor XÆRTH</title>
-<!-- Fuente pixel -->
+<title>Traductor XÆRTH Secreto</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-    body {
-        margin: 0;
-        font-family: 'Press Start 2P', cursive;
-        background-color: #000;
-        color: #0f0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-    }
+body {
+    margin: 0;
+    font-family: 'Press Start 2P', cursive;
+    background: #000;
+    color: #0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
 
-    /* Anuncio */
-    #anuncio {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.95);
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        text-align: center;
-    }
+/* Anuncio */
+#anuncio {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 9999;
+}
+#anuncio h1 {margin: 8px; font-size: 12px;} /* letra más pequeña */
+#cerrar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px; /* un poco más pequeño */
+    cursor: pointer;
+    color: #f00;
+}
 
-    #anuncio h1, #anuncio p {
-        margin: 10px;
-    }
+/* Reloj de arena y contador */
+#reloj {font-size: 20px; animation: parpadeo 1s infinite;}
+@keyframes parpadeo {0%,100%{opacity:1}50%{opacity:0.3}}
+#contador {margin-top:10px;font-size:12px;}
 
-    #cerrar {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 20px;
-        cursor: pointer;
-        color: #f00;
-    }
-
-    /* Reloj de arena pixel */
-    #reloj {
-        font-size: 24px;
-        margin: 20px;
-        animation: parpadeo 1s infinite;
-    }
-
-    @keyframes parpadeo {
-        0%, 100% {opacity: 1;}
-        50% {opacity: 0.3;}
-    }
-
-    /* Contador */
-    #contador {
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    /* Contenido principal */
-    #contenido {
-        display: none;
-        width: 90%;
-        max-width: 600px;
-        margin-top: 40px;
-        text-align: center;
-    }
-
-    #contenido textarea {
-        width: 100%;
-        height: 100px;
-        font-family: 'Press Start 2P', cursive;
-        font-size: 12px;
-    }
-
-    #contenido button {
-        margin: 10px;
-        padding: 10px 20px;
-        font-family: 'Press Start 2P', cursive;
-        font-size: 12px;
-        cursor: pointer;
-    }
-
-    select {
-        margin-bottom: 10px;
-        padding: 5px;
-        font-family: 'Press Start 2P', cursive;
-    }
+/* Contenido principal */
+#contenido {display:none; width:95%; max-width:650px; margin-top:30px; text-align:center;} /* más ancho en móvil */
+textarea {width:100%; height:100px; font-family:'Press Start 2P'; font-size:10px;} /* letra más pequeña */
+button {margin:8px; padding:8px 16px; font-family:'Press Start 2P'; font-size:10px; cursor:pointer;}
+select {margin-bottom:8px; padding:4px; font-family:'Press Start 2P'; font-size:10px;}
 </style>
 </head>
 <body>
 
-<!-- ANUNCIO -->
 <div id="anuncio">
     <div id="cerrar">X</div>
     <h1>NUESTRO TRADUCTOR XÆRTH ESTARÁ EN MANTENIMIENTO EL DÍA 1 DE MARZO</h1>
@@ -107,10 +63,8 @@
     <div id="contador"></div>
 </div>
 
-<!-- CONTENIDO PRINCIPAL -->
 <div id="contenido">
     <h1>BIENVENIDO A TRADUCTOR DE XÆRTH</h1>
-
     <select id="idiomas">
         <option value="es">Español</option>
         <option value="en">Inglés</option>
@@ -125,7 +79,6 @@
         <option value="cn">Chino Simplificado</option>
         <option value="xaerth">XÆRTH</option>
     </select>
-
     <textarea id="entrada" placeholder="Escribe aquí..."></textarea><br>
     <button onclick="traducir('aXaerth')">Idioma → XÆRTH</button>
     <button onclick="traducir('aEsp')">XÆRTH → Idioma</button>
@@ -133,46 +86,48 @@
 </div>
 
 <script>
-    // ANUNCIO
-    const anuncio = document.getElementById('anuncio');
-    document.getElementById('cerrar').addEventListener('click', () => {
-        anuncio.style.display = 'none';
-        document.getElementById('contenido').style.display = 'block';
-    });
+const anuncio = document.getElementById('anuncio');
+document.getElementById('cerrar').onclick = ()=>{anuncio.style.display='none';document.getElementById('contenido').style.display='block'}
 
-    // CONTADOR HASTA 13:00
-    function actualizarContador() {
-        const ahora = new Date();
-        const destino = new Date();
-        destino.setHours(13,0,0,0);
-        let diff = destino - ahora;
-        if(diff < 0) diff = 0;
-        const horas = Math.floor(diff / (1000*60*60));
-        const min = Math.floor((diff % (1000*60*60)) / (1000*60));
-        const seg = Math.floor((diff % (1000*60)) / 1000);
-        document.getElementById('contador').innerText = `Tiempo restante: ${horas}h ${min}m ${seg}s`;
-    }
-    setInterval(actualizarContador, 1000);
+// Contador hasta 13:00
+function actualizarContador(){
+    const ahora=new Date();
+    const destino=new Date();
+    destino.setHours(13,0,0,0);
+    let diff=destino-ahora;
+    if(diff<0) diff=0;
+    const h=Math.floor(diff/(1000*60*60));
+    const m=Math.floor((diff%(1000*60*60))/(1000*60));
+    const s=Math.floor((diff%(1000*60))/1000);
+    document.getElementById('contador').innerText=`Tiempo restante: ${h}h ${m}m ${s}s`;
+}
+setInterval(actualizarContador,1000);
 
-    // TRADUCTOR SIMPLE XAERTH
-    function traducir(direccion){
-        const texto = document.getElementById('entrada').value;
-        let resultado = "";
-        if(direccion === 'aXaerth'){
-            // Ejemplo de traducción a XAERTH Nivel básico
-            resultado = texto.split('').map(c => {
-                const mapa = {'a':'æ','e':'ë','i':'ï','o':'ø','u':'ü','A':'Æ','E':'Ë','I':'Ï','O':'Ø','U':'Ü'};
-                return mapa[c] || c;
-            }).join('');
-        } else {
-            // Ejemplo simple de vuelta a español
-            resultado = texto.split('').map(c => {
-                const mapa = {'æ':'a','ë':'e','ï':'i','ø':'o','ü':'u','Æ':'A','Ë':'E','Ï':'I','Ø':'O','Ü':'U'};
-                return mapa[c] || c;
-            }).join('');
-        }
-        document.getElementById('salida').value = resultado;
+// FUNCIONES DE XAERTH SECRETO
+function codificarXAERTH(texto){
+    const simbolos = ['Δ','Ψ','ζ','ξ','Ω','Λ','Θ','Φ','Σ','Ξ'];
+    let resultado='';
+    for(let i=0;i<texto.length;i++){
+        const c = texto.charCodeAt(i);
+        const pos = i+1;
+        const s = simbolos[(c+pos)%simbolos.length];
+        resultado += s;
     }
+    return 'XR-'+resultado+'-R̴';
+}
+
+function decodificarXAERTH(texto){
+    // Solo reversible con el patrón exacto
+    return "[CONTENIDO SECRETO - REQUIERE CLAVE INTERNA]";
+}
+
+function traducir(direccion){
+    const texto=document.getElementById('entrada').value;
+    let res='';
+    if(direccion==='aXaerth') res=codificarXAERTH(texto);
+    else res=decodificarXAERTH(texto);
+    document.getElementById('salida').value=res;
+}
 </script>
 
 </body>
