@@ -2,128 +2,88 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>XÆRTH Translator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XÆRTH Maintenance</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
 background:black;
-color:lime;
+color:red;
 font-family:monospace;
 text-align:center;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
 }
 
-textarea{
-width:90%;
-height:120px;
-background:black;
-color:lime;
-border:1px solid lime;
+h1{
+max-width:90%;
 font-size:18px;
-margin-top:20px;
+margin-bottom:40px;
 }
 
-button{
-margin-top:15px;
-padding:10px;
-background:black;
-color:lime;
-border:1px solid lime;
-cursor:pointer;
+#contador{
+font-size:45px;
+letter-spacing:5px;
+color:red;
+text-shadow:0 0 15px red;
 }
 
-#output{
+p{
+color:white;
 margin-top:20px;
-font-size:20px;
-word-wrap:break-word;
+font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>XÆRTH TRANSLATOR</h1>
+<h1>
+Estamos teniendo demasiadas fallas el día de hoy, nuestra página web estará en mantenimiento el día de hoy.<br><br>
+XÆRTH ofrece una disculpa.<br><br>
+Cualquier problema u otro tema contacte al correo:<br>
+<b>somosxaerth@gmail.com</b>
+</h1>
 
-<textarea id="input"
-placeholder="Escribe Español o XÆRTH..."></textarea>
+<div id="contador">00:00:00</div>
 
-<br>
-
-<button onclick="traducir()">TRADUCIR</button>
-
-<p id="output"></p>
+<p>Mantenimiento programado</p>
 
 <script>
 
-/* ===== ALFABETO ===== */
+// ⚠️ Hora Chile — cambia solo si quieres otra hora
+const fechaFinal = new Date();
+fechaFinal.setHours(20,30,0); // 20:30 PM
 
-const mapa={
-"A":"|ʌ","B":"|•","C":"|⌒","D":"|ˣ",
-"E":"─ʌ","F":"─•","G":"─⌒","H":"─ˣ",
-"I":"∥ʌ","J":"∥•","K":"∥⌒","L":"∥ˣ",
-"M":"/ʌ","N":"/•","O":"/ˣ",
-"P":"\\ʌ","Q":"\\•","R":"\\⌒","S":"\\ˣ",
-"T":"+ʌ","U":"+•","V":"+⌒","W":"+ˣ",
-"X":"◇ʌ","Y":"◇•","Z":"◇⌒"
-};
+function actualizarContador(){
 
-/* mapa inverso */
-const inverso={};
-for(let letra in mapa){
-inverso[mapa[letra]]=letra;
+const ahora = new Date();
+const diferencia = fechaFinal - ahora;
+
+if(diferencia <= 0){
+document.getElementById("contador").innerText="YA DISPONIBLE";
+return;
 }
 
-/* detectar idioma */
-function esXaerth(texto){
-return texto.includes("ʌ") ||
-texto.includes("•") ||
-texto.includes("⌒") ||
-texto.includes("ˣ");
+let horas = Math.floor(diferencia / (1000*60*60));
+let minutos = Math.floor((diferencia % (1000*60*60))/(1000*60));
+let segundos = Math.floor((diferencia % (1000*60))/1000);
+
+horas = horas.toString().padStart(2,"0");
+minutos = minutos.toString().padStart(2,"0");
+segundos = segundos.toString().padStart(2,"0");
+
+document.getElementById("contador").innerText =
+`${horas}:${minutos}:${segundos}`;
 }
 
-function traducir(){
-
-let texto=document
-.getElementById("input")
-.value
-.trim()
-.toUpperCase();
-
-let resultado="";
-
-/* ===== XAERTH → ESPAÑOL ===== */
-if(esXaerth(texto)){
-
-let partes=texto.split(" ");
-
-partes.forEach(p=>{
-if(inverso[p]){
-resultado+=inverso[p];
-}else{
-resultado+=" ";
-}
-});
-
-}
-
-/* ===== ESPAÑOL → XAERTH ===== */
-else{
-
-for(let letra of texto){
-
-if(mapa[letra]){
-resultado+=mapa[letra]+" ";
-}else{
-resultado+=letra+" ";
-}
-
-}
-
-}
-
-document.getElementById("output").innerText=resultado.trim();
-
-}
+setInterval(actualizarContador,1000);
+actualizarContador();
 
 </script>
 
