@@ -44,48 +44,12 @@ font-size:14px;
 <body>
 
 <h1>
-Estamos teniendo demasiadas fallas el día de hoy, nuestra página web estará en mantenimiento el día de hoy.<br><br>
-XÆRTH ofrece una disculpa.<br><br>
-Cualquier problema u otro tema contacte al correo:<br>
+¡INFORMACION NUEVA! Hemos estado actualizando la pagina de Xaerth, cambiando codigos, viendo cual es mejor, etc, 
+  ya que el traductor esta muy fallido, este mantenimiento durara más de lo programado, XAERTH ofeece una disculpa enorme
+  estaremos trabajando para poder arreglar bien el código, y la pagina web sea entregada en un perfecto estado.
+  Iremos actualizando los mensajes cuando tengamos informacion relevante. En unas horas cambiaremos el codigo y 
+  solo se podra ver este mensaje, en un fondo blanco no decorado. Esperamos entiendan, XAERTH.<br><br>
+:/<br>
 <b>somosxaerth@gmail.com</b>
 </h1>
 
-<div id="contador">00:00:00</div>
-
-<p>Mantenimiento programado</p>
-
-<script>
-
-// ⚠️ Hora Chile — cambia solo si quieres otra hora
-const fechaFinal = new Date();
-fechaFinal.setHours(20,30,0); // 20:30 PM
-
-function actualizarContador(){
-
-const ahora = new Date();
-const diferencia = fechaFinal - ahora;
-
-if(diferencia <= 0){
-document.getElementById("contador").innerText="YA DISPONIBLE";
-return;
-}
-
-let horas = Math.floor(diferencia / (1000*60*60));
-let minutos = Math.floor((diferencia % (1000*60*60))/(1000*60));
-let segundos = Math.floor((diferencia % (1000*60))/1000);
-
-horas = horas.toString().padStart(2,"0");
-minutos = minutos.toString().padStart(2,"0");
-segundos = segundos.toString().padStart(2,"0");
-
-document.getElementById("contador").innerText =
-`${horas}:${minutos}:${segundos}`;
-}
-
-setInterval(actualizarContador,1000);
-actualizarContador();
-
-</script>
-
-</body>
-</html>
