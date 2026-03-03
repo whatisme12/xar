@@ -2,54 +2,86 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>XÆRTH Maintenance</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contador XAERTH</title>
 
 <style>
 body{
-background:black;
-color:red;
-font-family:monospace;
-text-align:center;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
+    background:black;
+    color:red;
+    font-family:monospace;
+    text-align:center;
+    margin:0;
+    padding-top:100px;
 }
 
 h1{
-max-width:90%;
-font-size:18px;
-margin-bottom:40px;
+    font-size:28px;
 }
 
-#contador{
-font-size:45px;
-letter-spacing:5px;
-color:red;
-text-shadow:0 0 15px red;
-}
-
-p{
-color:white;
-margin-top:20px;
-font-size:14px;
+#countdown{
+    font-size:40px;
+    margin-top:40px;
 }
 </style>
 </head>
-
 <body>
 
-<h1>
-¡INFORMACION NUEVA! Hemos estado actualizando la pagina de Xaerth, cambiando codigos, viendo cual es mejor, etc, 
-  ya que el traductor esta muy fallido, este mantenimiento durara más de lo programado, XAERTH ofeece una disculpa enorme
-  estaremos trabajando para poder arreglar bien el código, y la pagina web sea entregada en un perfecto estado.
-  Iremos actualizando los mensajes cuando tengamos informacion relevante. En unas horas cambiaremos el codigo y 
-  solo se podra ver este mensaje, en un fondo blanco no decorado. Esperamos entiendan, XAERTH.<br><br>
-:/<br>
-<b>somosxaerth@gmail.com</b>
-</h1>
+<h1>POSIBLE NUEVA NOTICIA, O ARREGLO DE EL TRADUCTOR.</h1>
+<div id="countdown">Cargando...</div>
 
+<script>
+// Fecha objetivo: 3 de marzo 2026 19:25 (Chile)
+const targetDate = new Date("March 3, 2026 19:25:00").getTime();
+
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let tickInterval = 1000;
+
+function playTick(intensity){
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.type = "square";
+    oscillator.frequency.setValueAtTime(800 + intensity, audioContext.currentTime);
+
+    gainNode.gain.setValueAtTime(0.05 + intensity/5000, audioContext.currentTime);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.05);
+}
+
+function updateCountdown(){
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if(distance <= 0){
+        document.getElementById("countdown").innerHTML = "¡YA ES LA HORA!";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+
+    // Intensidad aumenta cuando queda menos tiempo
+    let intensity = 0;
+    if(days < 7) intensity = 200;
+    if(days < 3) intensity = 400;
+    if(days < 1) intensity = 800;
+    if(hours < 1) intensity = 1200;
+
+    playTick(intensity);
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+
+</body>
+</html>
